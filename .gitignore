@@ -1,0 +1,25 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Frontend
+node_modules/
+dist/
+
+# Environment
+.env
+.env.local
+
+# AI Model
+ai_engine/saved_model/
+uploads/
+*.zip
+*.safetensors
+*.bin
+
+# Cache and logs
+.cache/
+*.log
+.ipynb_checkpoints/
