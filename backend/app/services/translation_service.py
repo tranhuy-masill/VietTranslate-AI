@@ -33,10 +33,10 @@ class TranslationService:
             "base_model": "Helsinki-NLP/opus-mt-en-vi",
             "method": "SwitchOut",
             "switchout_probability": 0.02,
-            "parameters": sum(
-                p.numel()
-                for p in self.engine.model.parameters()
-            ),
+            "parameters": self.engine.parameters,
+            "runtime": self.engine.runtime,
+            "compute_type": self.engine.compute_type,
+            "checkpoint_sha256": self.engine.checkpoint_sha256,
             "source_language": "English",
             "target_language": "Vietnamese",
             "device": str(self.engine.device),

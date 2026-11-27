@@ -1,17 +1,22 @@
 
+import os
 import time
 import torch
 
 from ai_engine.model_loader import load_model
 
 
-class TranslationEngine:
+class HFTranslationEngine:
 
     def __init__(self):
 
         self.tokenizer, self.model, self.device = load_model()
 
         self.model_name = "MarianMT SwitchOut p=0.02"
+        self.runtime = "Hugging Face"
+        self.compute_type = str(next(self.model.parameters()).dtype).replace("torch.", "")
+        self.parameters = sum(p.numel() for p in self.model.parameters())
+        self.checkpoint_sha256 = None
 
 
     def translate(
@@ -91,3 +96,15 @@ class TranslationEngine:
             "latency_ms": round(latency, 2),
             "device": str(self.device)
         }
+
+
+class TranslationEngine:
+    """Keep the old HF path unless CT2 is explicitly requested."""
+    def __new__(cls):
+        runtime = os.environ.get("VIETTRANSLATE_RUNTIME", "hf").lower()
+        if runtime == "hf":
+            return HFTranslationEngine()
+        if runtime == "ct2":
+            from ai_engine.ct2_engine import CT2TranslationEngine
+            return CT2TranslationEngine()
+        raise ValueError("VIETTRANSLATE_RUNTIME must be hf or ct2.")
