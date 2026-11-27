@@ -23,3 +23,5 @@ uploads/
 .cache/
 *.log
 .ipynb_checkpoints/
+
+ai_engine/saved_model_ct2/
